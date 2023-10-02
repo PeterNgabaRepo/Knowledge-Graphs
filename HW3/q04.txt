@@ -1,0 +1,27 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+
+
+SELECT DISTINCT ?river ?riverLabel WHERE {
+  
+  
+  {?river wdt:P31 [wdt:P279* wd:Q355304]}
+  
+  #river in US
+  {?river wdt:P131* wd:Q1391.}
+  
+  #And river is natural watercourse
+ 
+  #Chesapeake Bay Tributaries
+  {?river (wdt:P403)* wd:Q216868}
+  UNION
+  {wd:Q216868 (wdt:P974)* ?river}
+  UNION
+  {?river wdt:P4614* wd:Q65738754}
+       
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+
+

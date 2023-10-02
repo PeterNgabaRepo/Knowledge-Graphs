@@ -1,0 +1,19 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+PREFIX schema: <http://schema.org/>
+
+SELECT DISTINCT ?pl ?plLabel (COUNT(?links) as ?sitelinks) WHERE {
+  
+  ?pl wdt:P31 wd:Q9143.
+  
+  ?links schema:about ?pl.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+
+GROUP BY ?pl ?plLabel
+
+ORDER BY DESC(?sitelinks)
+

@@ -1,0 +1,42 @@
+PREFIX db: <http://dbpedia.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dbt: <http://dbpedia.org/resource/Template:>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+#Find Rivers In Maryland
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX yago: <http://yago-knowledge.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?river WHERE{
+  {?river a dbo:River.}
+  UNION
+  {?river a dbo:Stream.}
+  
+  ?river dbo:wikiPageWikiLink | dct:subject ?list.
+  
+  {?list dbp:wikiPageUsesTemplate dbt:Rivers_of_the_United_States.}
+  UNION
+  {?list skos:broader dbc:Rivers_of_the_United_States_by_state.}
+  UNION
+  {?list dbo:wikiPageWikiLink dbc:Lists_of_rivers_of_the_United_States_by_state.}
+  UNION
+  {?list dbo:wikiPageWikiLink dbr:List_of_rivers_of_the_United_States.}
+
+  ?river dbp:subdivisionName* dbr:Maryland.
+  
+  
+  
+  {?river dbo:riverMouth* | dbo:wikiPageWikiLink* | dbp:rivers* | dbp:mouth* | dbo:outflow* | dbo:inflow* dbr:Chesapeake_Bay}
+  UNION
+  {dbr:Chesapeake_Bay dbo:riverMouth* | dbo:wikiPageWikiLink* | dbp:rivers* | dbp:mouth* | dbo:outflow* | dbo:inflow* ?river.}
+   UNION
+  {?river   dct:subject* | dbo:wikiPageWikiLink* dbc:Tributaries_of_the_Chesapeake_Bay}
+  UNION
+  {?river rdf:type* yago:WikicatTributariesOfTheChesapeakeBay.}
+
+} 

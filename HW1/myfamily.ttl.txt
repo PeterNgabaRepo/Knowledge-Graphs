@@ -1,0 +1,20 @@
+@prefix : <http://example.org/myfamily/> .
+@prefix fam: <http://example.org/family/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@base <http://www.w3.org/2002/07/owl#> .
+
+<http://example.org/myfamily/> owl:imports <http://example.org/family/> .
+
+# add Turtle descriptions of at least ten individuals including yourself.  These
+#  should span at least four generaltions. You need not explicitly add relations
+#  that will be inferred by OWL, such as ancestor relations.  Similarly, if you
+#  specify all of the :hasParent relations, the :parentOf, hasChild, and childOf
+#  relations can be inferred.
+
+
+
+
+

@@ -1,0 +1,65 @@
+@prefix : <http://example.org/family/> .
+@prefix fam: <http://example.org/family/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<http://example.org/family/> rdf:type owl:Ontology .
+
+## classes
+
+:Person a owl:Class .
+
+## Properties
+
+:hasChild a owl:ObjectProperty ;
+    rdfs:domain :Person;
+    rdfs:range: :Person ;
+    owl:inverseOf :childOf ;
+    owl:equivalentProperty :parentOf  ;
+    rdfs:subPropertyOf :ancestorOf .
+
+:childOf a owl:ObjectProperty ;
+    rdfs:domain :Person;
+    rdfs:range: :Person ;
+    owl:inverseOf :hasChild .
+    
+:hasParent a owl:ObjectProperty ;
+    rdfs:subPropertyOf :hasAncestor ;
+    rdfs:domain :Person;
+    rdfs:range: :Person ;
+    owl:inverseOf :parentOf ;
+    rdfs:subPropertyOf :hasAncestor .
+
+:parentOf a owl:ObjectProperty ;
+    rdfs:domain :Person;
+    rdfs:range: :Person ;
+    rdfs:subPropertyOf :ancestorOf .
+
+:childOf owl:equivalentProperty :hasParent .
+
+:spouse a owl:SymmetricProperty;
+  rdfs:domain :Person;
+  rdfs:range: :Person .
+
+:birthYear a owl:DatatypeProperty;
+  rdfs:domain :Person;
+  rdfs:range: rdfs:Literal .
+
+:hasAncestor a owl:TransitiveProperty ;
+    rdfs:domain :Person;
+    rdfs:range: :Person ;
+    owl:inverseOf :ancestorOf .
+
+:ancestorOf a owl:TransitiveProperty ;
+    owl:inverseOf :hasAncestor .
+
+:hasGrandParent a owl:ObjectProperty ;
+   owl:propertyChainAxiom ( :hasParent :hasParent).
+
+
+
+
+
+

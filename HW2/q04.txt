@@ -1,0 +1,42 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dbt: <http://dbpedia.org/resource/Template:>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+#Find Rivers In Maryland
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX yago: <http://yago-knowledge.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?state, COUNT(DISTINCT ?river) as ?rivers WHERE{
+  {?river a dbo:River.}
+  UNION
+  {?river a dbo:Stream.}
+  
+  ?river dbo:wikiPageWikiLink | dct:subject ?list.
+  
+  {?list dbp:wikiPageUsesTemplate{,2} dbt:Rivers_of_the_United_States.}
+  UNION
+  {?list skos:broader{,2} dbc:Rivers_of_the_United_States_by_state.}
+  UNION
+  {?list dbo:wikiPageWikiLink{,2} dbc:Lists_of_rivers_of_the_United_States_by_state.}
+  UNION
+  {?list dbo:wikiPageWikiLink{,2} dbr:List_of_rivers_of_the_United_States.}
+  
+  ?state dct:subject dbc:States_of_the_United_States.
+  FILTER NOT EXISTS {?state a yago:WikicatSubdivisionsOfTheUnitedStates.}
+  FILTER (?state != dbr:Admission_to_the_Union)
+  FILTER (?state != dbr:U.S._state)
+  FILTER (?state != dbr:List_of_states_and_territories_of_the_United_States)
+
+  #FILTER EXISTS{?river dbo:wikiPageWikiLink | dbp:wikiPageUsesTemplate | dct:subject ?state.}
+  
+  FILTER EXISTS{
+    {?river dct:subject | dbp:wikiPageUsesTemplate | dbp:source1Location | dbo:wikiPageWikiLink | dbo:mouthPlace | dbo:mouthMountain | dbp:mouthLocation  ?state.}
+  }
+} 
+GROUP BY ?state
+ORDER BY DESC(?rivers)

@@ -1,0 +1,33 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+
+SELECT DISTINCT ?state ?stateLabel (COUNT(?river) AS ?num) WHERE {
+  
+  ?state wdt:P31 wd:Q35657.
+  
+  {?river wdt:P17 wd:Q30.}
+
+  #{ ?river wdt:P31 wd:Q4022. }
+ # UNION
+ # { ?river wdt:P31 wd:Q47521. }
+ # UNION
+#  { ?river wdt:P31 wd:Q47053. }
+ # UNION
+  #{ ?river wdt:P31 wd:Q39594. }
+  #UNION
+  {
+    ?river wdt:P31 _:b13.
+    _:b13 (wdt:P279)* wd:Q55659167.
+  }
+  
+  
+  { ?river wdt:P131 ?state. }
+       
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+  GROUP BY ?state ?stateLabel
+  ORDER BY DESC(?num)
+
+

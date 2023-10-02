@@ -1,0 +1,34 @@
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dbt: <http://dbpedia.org/resource/Template:>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+#Find Rivers In Maryland
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX yago: <http://yago-knowledge.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?river ?length{
+  {?river a dbo:River.}
+  UNION
+  {?river a dbo:Stream.}
+  
+  #dbr:Maryland dbo:wikiPageLink ?river.
+  {?river dbo:wikiPageWikiLink | dbo:mouthPlace | dbo:mouthMountain | dbp:mouthLocation | dbp:source1Location | dbp:subdivisionName* dbr:Maryland.}
+  UNION
+  {?river dbo:wikiPageWikiLink dbr:List_of_rivers_of_Maryland.}
+  UNION
+  {?river dbo:wikiPageWikiLink dbc:Rivers_of_Maryland.}
+  UNION
+  {?river dbp:wikiPageUsesTemplate dbt:Maryland_waters.}
+  UNION
+  {?river dct:subject dbc:Rivers_of_Maryland.}
+  UNION
+  {?river a yago:WikicatRiversOfMaryland.}
+  
+  OPTIONAL {?river dbo:length ?length.}
+
+} 
+ORDER BY DESC(?length)

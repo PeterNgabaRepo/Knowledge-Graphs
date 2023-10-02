@@ -1,0 +1,13 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
+
+SELECT DISTINCT ?river ?riverLabel WHERE {
+
+  {?river wdt:P31 [wdt:P279* wd:Q15324]}
+  
+  {?river wdt:P131 wd:Q1391. }
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
